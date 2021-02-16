@@ -5,7 +5,7 @@ import Geocoder from 'react-native-geocoding';
 import Geolocation from '@react-native-community/geolocation';
 
 import {getWeatherData} from './services/APIService';
-Geocoder.init('---------------------------');
+Geocoder.init('----------------------');
 
 const styles = StyleSheet.create({
   containerWrapper: {
@@ -48,20 +48,16 @@ export default function App() {
 
   useEffect(() => {
     if (!city) {
-      Geolocation.getCurrentPosition(
-        (position) => {
-          console.log(position);
-          Geocoder.from(position.coords.latitude, position.coords.longitude)
-            .then((json) => {
-              const addressComponent = json.results[0].address_components;
-              console.log(json);
-              setCity(addressComponent[3].long_name);
-            })
-            .catch((error) => console.warn(error));
-        },
-        (error) => console.log(error.message),
-        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
-      );
+      Geolocation.getCurrentPosition((position) => {
+        console.log(position);
+        Geocoder.from(position.coords.latitude, position.coords.longitude)
+          .then((json) => {
+            const addressComponent = json.results[0].address_components;
+            console.log(json);
+            setCity(addressComponent[3].long_name);
+          })
+          .catch((error) => console.warn(error));
+      });
     }
   }, []);
 
